@@ -1,0 +1,7 @@
+[
+{"Region": "us-west-2", "VpcId": "vpc-008eeb96fce6c50dd", "IsDefault": false, "Tags": [{"Key": "Name", "Value": "jose-ass1-vpc"}]}
+,
+{"Region": "us-west-2", "VpcId": "vpc-03b5a72201970c320", "IsDefault": false, "Tags": []}
+,
+{"Region": "us-west-2", "VpcId": "vpc-0b05989408c3d9f5a", "IsDefault": false, "Tags": [{"Key": "Name", "Value": "natalia-assessment1-vpc"}]}
+]

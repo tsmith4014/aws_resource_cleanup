@@ -125,18 +125,22 @@ done
 echo "Deleting routes in route tables..."
 ROUTE_TABLES=$(aws ec2 describe-route-tables --filters "Name=vpc-id,Values=$VPC_ID" --query "RouteTables[*].RouteTableId" --output text)
 for ROUTE_TABLE in $ROUTE_TABLES; do
-    ROUTES=$(aws ec2 describe-route-tables --route-table-ids $ROUTE_TABLE --query "RouteTables[0].Routes[?DestinationCidrBlock != '10.0.0.0/16'].DestinationCidrBlock" --output text)
+    ROUTES=$(aws ec2 describe-route-tables --route-table-ids $ROUTE_TABLE --query "RouteTables[0].Routes[?DestinationCidrBlock!='172.30.0.0/16'].DestinationCidrBlock" --output text)
     for ROUTE in $ROUTES; do
+        echo "Deleting route $ROUTE from route table $ROUTE_TABLE..."
         aws ec2 delete-route --route-table-id $ROUTE_TABLE --destination-cidr-block $ROUTE
     done
 done
 
-# Delete route tables (excluding the main one)
+# Delete route tables (including the main one)
 echo "Deleting route tables..."
-ROUTE_TABLES=$(aws ec2 describe-route-tables --filters "Name=vpc-id,Values=$VPC_ID" --query "RouteTables[?Associations[?Main==\`false\`]].RouteTableId" --output text)
+ROUTE_TABLES=$(aws ec2 describe-route-tables --filters "Name=vpc-id,Values=$VPC_ID" --query "RouteTables[*].RouteTableId" --output text)
 for ROUTE_TABLE in $ROUTE_TABLES; do
+    echo "Deleting route table $ROUTE_TABLE..."
     aws ec2 delete-route-table --route-table-id $ROUTE_TABLE
 done
+
+
 
 # Delete VPC peering connections
 echo "Deleting VPC peering connections..."
@@ -177,6 +181,7 @@ for SECURITY_GROUP in $SECURITY_GROUPS; do
     done
     aws ec2 delete-security-group --group-id $SECURITY_GROUP
 done
+
 
 # Delete network ACLs (excluding the default one)
 echo "Deleting network ACLs..."
