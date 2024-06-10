@@ -71,7 +71,7 @@ chmod +x delete_non_default_vpcs.sh
 ### 4. delete_vpc_resources.sh
 
 **Description:**
-This script deletes all resources associated with a specified VPC and then deletes the VPC itself.
+This script deletes all resources associated with a specified VPC and then deletes the VPC itself.  ***This works but will throw an error saying the VPC isnt found, because its been deleted....feel free to correct this :)
 
 **Usage:**
 
